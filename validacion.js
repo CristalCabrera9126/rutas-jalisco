@@ -56,4 +56,17 @@ function validarLugar(body = {}) {
   return { datos, errores };
 }
 
-module.exports = { validarLugar, extraerVideoId, LIMITES };
+// "Lago de Chapala" -> "lago-de-chapala" (sin acentos ni símbolos)
+function crearSlug(nombre) {
+  const slug = String(nombre ?? '')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60)
+    .replace(/-+$/, '');
+  return slug || 'lugar';
+}
+
+module.exports = { validarLugar, extraerVideoId, crearSlug, LIMITES };

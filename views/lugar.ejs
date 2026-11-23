@@ -10,10 +10,11 @@
   </header>
 
   <% if (editado) { %><p class="aviso aviso--ok">Los cambios se guardaron.</p><% } %>
+  <% if (creado) { %><p class="aviso aviso--ok">El lugar se agregó.</p><% } %>
 
   <figure class="foto">
     <img src="<%= lugar.imagen_url %>" alt="<%= lugar.nombre %>">
-    <figcaption>Imagen: <a href="<%= lugar.imagen_fuente %>" target="_blank" rel="noopener">Wikimedia Commons</a></figcaption>
+    <figcaption>Imagen: <a href="<%= lugar.imagen_fuente %>" target="_blank" rel="noopener">fuente</a></figcaption>
   </figure>
 
   <p class="descripcion"><%= lugar.descripcion %></p>

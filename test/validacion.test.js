@@ -1,6 +1,14 @@
 const test = require('node:test');
 const assert = require('node:assert');
-const { validarLugar, extraerVideoId } = require('../validacion');
+const { validarLugar, extraerVideoId, crearSlug } = require('../validacion');
+
+test('crea slugs sin acentos ni símbolos', () => {
+  assert.strictEqual(crearSlug('Lago de Chapala'), 'lago-de-chapala');
+  assert.strictEqual(crearSlug('  Hospicio Cabañas!! '), 'hospicio-cabanas');
+  assert.strictEqual(crearSlug('¿¡?'), 'lugar');
+  assert.ok(crearSlug('a '.repeat(100)).length <= 60);
+  assert.ok(!crearSlug('a '.repeat(100)).endsWith('-'));
+});
 
 const valido = {
   nombre: ' Tequila ',

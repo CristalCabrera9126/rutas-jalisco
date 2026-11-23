@@ -101,6 +101,11 @@ async function inicializar() {
     );
   `);
 
+  // Solo se siembran los datos iniciales si la tabla está vacía,
+  // para que los lugares eliminados no reaparezcan al reiniciar el servidor
+  const { rows } = await pool.query('SELECT EXISTS (SELECT 1 FROM lugares) AS hay');
+  if (rows[0].hay) return;
+
   for (const l of lugaresIniciales) {
     await pool.query(
       `INSERT INTO lugares (slug, nombre, municipio, categoria, resumen, descripcion, imagen_url, imagen_fuente, video_id, mapa)

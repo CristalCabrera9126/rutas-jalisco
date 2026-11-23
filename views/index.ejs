@@ -14,7 +14,10 @@
     <% }) %>
   </select>
   <button type="submit">Filtrar</button>
+  <a class="boton boton--secundario" href="/lugares/nuevo">+ Agregar lugar</a>
 </form>
+
+<% if (eliminado) { %><p class="aviso aviso--ok aviso--bloque">El lugar se eliminó.</p><% } %>
 
 <% if (!lugares.length) { %>
   <p class="vacio">No se encontraron lugares con esos filtros. <a href="/">Ver todos</a></p>

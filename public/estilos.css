@@ -54,6 +54,16 @@ input, select, textarea, button {
 input:focus, select:focus, textarea:focus { outline: 2px solid var(--texto); outline-offset: 1px; }
 button { background: var(--acento); color: #fff; border-color: var(--acento); cursor: pointer; font-weight: 500; }
 button:hover { opacity: 0.85; }
+.boton { display: inline-flex; align-items: center; padding: 10px 14px; border-radius: 8px; text-decoration: none; font-weight: 500; border: 1px solid var(--borde); }
+.boton--secundario { background: var(--superficie); color: var(--texto); }
+.boton--secundario:hover { border-color: #bdbdbb; }
+.barra nav a + a { margin-left: 16px; }
+.aviso--bloque { margin: -12px 0 24px; }
+
+/* Eliminar */
+.zona-eliminar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; border: 1px solid #e6c9c9; border-radius: var(--radio); padding: 14px 18px; }
+.zona-eliminar p { margin: 0; font-size: 0.9rem; color: var(--suave); }
+.boton-peligro { background: #a33a3a; border-color: #a33a3a; }
 
 /* Rejilla de tarjetas */
 .rejilla { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); padding-bottom: 48px; }
