@@ -1,0 +1,71 @@
+<%# Formulario compartido para crear (nuevo = true) y editar un lugar %>
+<%- include('partials/head', { titulo: nuevo ? 'Agregar lugar' : 'Editar ' + lugar.nombre }) %>
+
+<% if (nuevo) { %>
+  <a class="volver" href="/">← Todos los lugares</a>
+<% } else { %>
+  <a class="volver" href="/lugar/<%= lugar.slug %>">← Volver a <%= lugar.nombre %></a>
+<% } %>
+
+<section class="detalle">
+  <header class="detalle__encabezado">
+    <span class="etiqueta"><%= nuevo ? 'Nuevo lugar' : 'Editar lugar' %></span>
+    <h1><%= nuevo ? 'Agregar lugar' : lugar.nombre %></h1>
+  </header>
+
+  <% if (errores.length) { %>
+    <ul class="aviso aviso--error errores">
+      <% errores.forEach(e => { %><li><%= e %></li><% }) %>
+    </ul>
+  <% } %>
+
+  <form class="formulario" method="post" action="<%= nuevo ? '/lugares' : '/lugar/' + lugar.slug + '/editar' %>">
+    <div class="formulario__fila">
+      <label>Nombre
+        <input name="nombre" value="<%= lugar.nombre %>" maxlength="<%= LIMITES.nombre %>" required>
+      </label>
+      <label>Municipio
+        <input name="municipio" value="<%= lugar.municipio %>" maxlength="<%= LIMITES.municipio %>" required>
+      </label>
+    </div>
+    <div class="formulario__fila">
+      <label>Categoría
+        <input name="categoria" value="<%= lugar.categoria %>" maxlength="<%= LIMITES.categoria %>" list="categorias" required>
+      </label>
+      <label>Ubicación para el mapa
+        <input name="mapa" value="<%= lugar.mapa %>" maxlength="<%= LIMITES.mapa %>" placeholder="Ej. Tequila, Jalisco" required>
+      </label>
+    </div>
+    <datalist id="categorias">
+      <% categorias.forEach(c => { %><option value="<%= c %>"><% }) %>
+    </datalist>
+    <label>Resumen
+      <input name="resumen" value="<%= lugar.resumen %>" maxlength="<%= LIMITES.resumen %>" required>
+    </label>
+    <label>Descripción
+      <textarea name="descripcion" rows="6" maxlength="<%= LIMITES.descripcion %>" required><%= lugar.descripcion %></textarea>
+    </label>
+    <div class="formulario__fila">
+      <label>URL de la imagen
+        <input type="url" name="imagen_url" value="<%= lugar.imagen_url %>" maxlength="<%= LIMITES.imagen_url %>" placeholder="https://" required>
+      </label>
+      <label>Fuente de la imagen
+        <input type="url" name="imagen_fuente" value="<%= lugar.imagen_fuente %>" maxlength="<%= LIMITES.imagen_fuente %>" placeholder="https://" required>
+      </label>
+    </div>
+    <label>Video de YouTube (ID o enlace)
+      <input name="video_id" value="<%= lugar.video_id %>" maxlength="200" placeholder="https://www.youtube.com/watch?v=..." required>
+    </label>
+    <button type="submit"><%= nuevo ? 'Agregar lugar' : 'Guardar cambios' %></button>
+  </form>
+
+  <% if (!nuevo) { %>
+    <form class="zona-eliminar" method="post" action="/lugar/<%= lugar.slug %>/eliminar"
+          onsubmit="return confirm('¿Eliminar este lugar y todas sus opiniones? Esta acción no se puede deshacer.')">
+      <p>Eliminar el lugar también borra todas sus opiniones.</p>
+      <button type="submit" class="boton-peligro">Eliminar lugar</button>
+    </form>
+  <% } %>
+</section>
+
+<%- include('partials/foot') %>
