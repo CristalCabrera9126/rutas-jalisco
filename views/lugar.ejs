@@ -1,0 +1,82 @@
+<%- include('partials/head', { titulo: lugar.nombre }) %>
+
+<a class="volver" href="/">← Todos los lugares</a>
+
+<article class="detalle">
+  <header class="detalle__encabezado">
+    <span class="etiqueta"><%= lugar.categoria %></span>
+    <h1><%= lugar.nombre %></h1>
+    <p class="meta"><%= lugar.municipio %>, Jalisco</p>
+  </header>
+
+  <figure class="foto">
+    <img src="<%= lugar.imagen_url %>" alt="<%= lugar.nombre %>">
+    <figcaption>Imagen: <a href="<%= lugar.imagen_fuente %>" target="_blank" rel="noopener">Wikimedia Commons</a></figcaption>
+  </figure>
+
+  <p class="descripcion"><%= lugar.descripcion %></p>
+
+  <div class="medios">
+    <section>
+      <h2>Video</h2>
+      <div class="marco">
+        <iframe src="https://www.youtube-nocookie.com/embed/<%= lugar.video_id %>" title="Video de <%= lugar.nombre %>"
+          allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <p class="fuente">Fuente: <a href="https://www.youtube.com/watch?v=<%= lugar.video_id %>" target="_blank" rel="noopener">YouTube</a></p>
+    </section>
+    <section>
+      <h2>Ubicación</h2>
+      <div class="marco">
+        <iframe src="https://maps.google.com/maps?q=<%= encodeURIComponent(lugar.mapa) %>&t=&z=13&ie=UTF8&iwloc=&output=embed" title="Mapa de <%= lugar.nombre %>"></iframe>
+      </div>
+      <p class="fuente">Fuente: <a href="https://www.google.com/maps/search/<%= encodeURIComponent(lugar.mapa) %>" target="_blank" rel="noopener">Google Maps</a></p>
+    </section>
+  </div>
+
+  <section id="comentarios" class="comentarios">
+    <h2>Opiniones (<%= comentarios.length %>)</h2>
+
+    <% if (ok) { %><p class="aviso aviso--ok">Gracias, tu opinión se guardó.</p><% } %>
+    <% if (error) { %><p class="aviso aviso--error">Completa tu nombre, una calificación y tu comentario.</p><% } %>
+
+    <form class="formulario" method="post" action="/lugar/<%= lugar.slug %>/comentarios">
+      <div class="formulario__fila">
+        <label>Nombre
+          <input name="autor" maxlength="60" required>
+        </label>
+        <label>Calificación
+          <select name="calificacion" required>
+            <option value="5">★★★★★ Excelente</option>
+            <option value="4">★★★★ Muy bueno</option>
+            <option value="3">★★★ Bueno</option>
+            <option value="2">★★ Regular</option>
+            <option value="1">★ Malo</option>
+          </select>
+        </label>
+      </div>
+      <label>Comentario
+        <textarea name="texto" rows="3" maxlength="500" required></textarea>
+      </label>
+      <button type="submit">Publicar opinión</button>
+    </form>
+
+    <% if (!comentarios.length) { %>
+      <p class="vacio">Aún no hay opiniones. Sé la primera persona en comentar.</p>
+    <% } %>
+    <ul class="lista">
+      <% comentarios.forEach(c => { %>
+        <li>
+          <div class="lista__cabeza">
+            <strong><%= c.autor %></strong>
+            <span class="estrellas"><%= '★'.repeat(c.calificacion) %><%= '☆'.repeat(5 - c.calificacion) %></span>
+          </div>
+          <p><%= c.texto %></p>
+          <time><%= new Date(c.creado).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Mexico_City' }) %></time>
+        </li>
+      <% }) %>
+    </ul>
+  </section>
+</article>
+
+<%- include('partials/foot') %>

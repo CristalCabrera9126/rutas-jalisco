@@ -1,0 +1,40 @@
+<%- include('partials/head', { titulo: 'Inicio' }) %>
+
+<section class="intro">
+  <h1>Lugares para conocer en Jalisco</h1>
+  <p>Una guía breve de pueblos, paisajes y museos del estado. Cada lugar incluye fotografía, video, mapa y opiniones de los visitantes.</p>
+</section>
+
+<form class="filtros" method="get" action="/">
+  <input type="search" name="q" value="<%= q %>" placeholder="Buscar por nombre o municipio" aria-label="Buscar">
+  <select name="categoria" aria-label="Categoría">
+    <option value="">Todas las categorías</option>
+    <% categorias.forEach(c => { %>
+      <option value="<%= c %>" <%= c === categoria ? 'selected' : '' %>><%= c %></option>
+    <% }) %>
+  </select>
+  <button type="submit">Filtrar</button>
+</form>
+
+<% if (!lugares.length) { %>
+  <p class="vacio">No se encontraron lugares con esos filtros. <a href="/">Ver todos</a></p>
+<% } %>
+
+<div class="rejilla">
+  <% lugares.forEach(l => { %>
+    <a class="tarjeta" href="/lugar/<%= l.slug %>">
+      <img src="<%= l.imagen_url %>" alt="<%= l.nombre %>" loading="lazy">
+      <div class="tarjeta__cuerpo">
+        <span class="etiqueta"><%= l.categoria %></span>
+        <h2><%= l.nombre %></h2>
+        <p><%= l.resumen %></p>
+        <span class="meta">
+          <%= l.municipio %> ·
+          <% if (l.total_comentarios) { %>★ <%= l.promedio %> (<%= l.total_comentarios %>)<% } else { %>Sin opiniones<% } %>
+        </span>
+      </div>
+    </a>
+  <% }) %>
+</div>
+
+<%- include('partials/foot') %>

@@ -1,0 +1,17 @@
+{
+  "name": "rutas-jalisco",
+  "version": "1.0.0",
+  "description": "Guía minimalista de lugares de Jalisco con base de datos PostgreSQL",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "ejs": "^7.0.2",
+    "express": "^4.22.3",
+    "pg": "^8.23.1"
+  }
+}
