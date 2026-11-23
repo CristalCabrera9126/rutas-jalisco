@@ -6,8 +6,10 @@
   <header class="detalle__encabezado">
     <span class="etiqueta"><%= lugar.categoria %></span>
     <h1><%= lugar.nombre %></h1>
-    <p class="meta"><%= lugar.municipio %>, Jalisco</p>
+    <p class="meta"><%= lugar.municipio %>, Jalisco · <a href="/lugar/<%= lugar.slug %>/editar">Editar</a></p>
   </header>
+
+  <% if (editado) { %><p class="aviso aviso--ok">Los cambios se guardaron.</p><% } %>
 
   <figure class="foto">
     <img src="<%= lugar.imagen_url %>" alt="<%= lugar.nombre %>">

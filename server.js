@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { pool, inicializar } = require('./db');
+const { validarLugar, LIMITES } = require('./validacion');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -50,7 +51,44 @@ app.get('/lugar/:slug', async (req, res, next) => {
       'SELECT * FROM comentarios WHERE lugar_id = $1 ORDER BY creado DESC',
       [lugar.id]
     );
-    res.render('lugar', { lugar, comentarios, error: req.query.error, ok: req.query.ok });
+    res.render('lugar', { lugar, comentarios, error: req.query.error, ok: req.query.ok, editado: req.query.editado });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// Formulario para editar un lugar
+app.get('/lugar/:slug/editar', async (req, res, next) => {
+  try {
+    const { rows } = await pool.query('SELECT * FROM lugares WHERE slug = $1', [req.params.slug]);
+    if (!rows.length) return res.status(404).render('404');
+    res.render('editar', { lugar: rows[0], errores: [], LIMITES });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// Guardar los cambios de un lugar
+app.post('/lugar/:slug/editar', async (req, res, next) => {
+  try {
+    const { rows } = await pool.query('SELECT * FROM lugares WHERE slug = $1', [req.params.slug]);
+    if (!rows.length) return res.status(404).render('404');
+    const original = rows[0];
+    const { datos, errores } = validarLugar(req.body);
+
+    if (errores.length) {
+      return res.status(422).render('editar', { lugar: { ...original, ...datos }, errores, LIMITES });
+    }
+
+    await pool.query(
+      `UPDATE lugares
+          SET nombre = $1, municipio = $2, categoria = $3, resumen = $4, descripcion = $5,
+              imagen_url = $6, imagen_fuente = $7, video_id = $8, mapa = $9
+        WHERE id = $10`,
+      [datos.nombre, datos.municipio, datos.categoria, datos.resumen, datos.descripcion,
+        datos.imagen_url, datos.imagen_fuente, datos.video_id, datos.mapa, original.id]
+    );
+    res.redirect(`/lugar/${encodeURIComponent(original.slug)}?editado=1`);
   } catch (e) {
     next(e);
   }

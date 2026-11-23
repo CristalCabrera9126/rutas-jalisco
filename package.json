@@ -4,7 +4,8 @@
   "description": "Guía minimalista de lugares de Jalisco con base de datos PostgreSQL",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node --test"
   },
   "engines": {
     "node": ">=18"

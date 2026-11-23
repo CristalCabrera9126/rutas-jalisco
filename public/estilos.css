@@ -92,6 +92,8 @@ button:hover { opacity: 0.85; }
 .formulario button { align-self: flex-start; }
 .aviso { padding: 10px 14px; border-radius: 8px; font-size: 0.95rem; border: 1px solid var(--borde); background: var(--superficie); }
 .aviso--error { border-color: #d9b7b7; }
+.errores { margin: 0 0 16px; padding-left: 32px; }
+.detalle > .aviso { margin: 0 0 20px; }
 
 .lista { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
 .lista li { padding: 16px 0; border-bottom: 1px solid var(--borde); }
